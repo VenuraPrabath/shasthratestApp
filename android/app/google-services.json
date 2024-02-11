@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "579835333109",
+    "project_id": "shasthra-mobile",
+    "storage_bucket": "shasthra-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:579835333109:android:2128ecdb0de5536b6a38bc",
+        "android_client_info": {
+          "package_name": "com.shasthra"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1Rd_bMRBr0zCfEj-lLunY4KQ3aRzVE80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

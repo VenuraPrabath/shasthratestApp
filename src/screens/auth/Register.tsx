@@ -7,12 +7,16 @@ import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import type { AuthStackParams } from 'constants/routes'
 import { PrimaryBtn } from 'components/core/Button'
 import { Logo } from 'assets/images'
-import { ILoginUser } from 'types'
+import { IRegisterUser } from 'types'
 import color from 'constants/color'
+import { useAppDispatch, useAppSelector } from 'hooks/redux'
+import { register } from 'store/auth/service'
 
 const Register = ({ navigation }:NativeStackScreenProps<AuthStackParams>) => {
+  const dispatch = useAppDispatch();
+  const auth = useAppSelector(state=>state.auth);
   const { width, height } = useWindowDimensions();
-  const [user,setUser] = useState<ILoginUser>({email:"",password:""});
+  const [user,setUser] = useState<IRegisterUser>({username:"",email:"",password:""});
   return (
     <KeyboardAwareScrollView>
       <ScrollView>
@@ -29,10 +33,10 @@ const Register = ({ navigation }:NativeStackScreenProps<AuthStackParams>) => {
               <Text variant='bodyMedium' style={{textAlign:"center",marginTop:5}}>Publish, an LMS provides an instructor with a way to create performance.</Text>
               <View style={{flex:1,minHeight:30}}></View>
               <View style={{alignItems:"center",paddingBottom:40,rowGap:5}}>
-                <PrimaryTextInput onChangeText={email=>setUser({...user,email})} style={{width:"100%"}} placeholder='Enter name' label={"Username"}/>
+                <PrimaryTextInput onChangeText={username=>setUser({...user,username})} style={{width:"100%"}} placeholder='Enter name' label={"Username"}/>
                 <PrimaryTextInput onChangeText={email=>setUser({...user,email})} style={{width:"100%"}} placeholder='Enter email' label={"Email"}/>
                 <PrimaryPasswordInput style={{width:"100%"}} value={user.password} onChangeText={password=>setUser({...user,password})} placeholder='Enter password' label={"Password"} />
-                <PrimaryBtn style={{marginTop:10}} contentStyle={{paddingHorizontal:50}}>Register</PrimaryBtn>
+                <PrimaryBtn onPress={()=>dispatch(register(user))} loading={auth.isLoading} style={{marginTop:10}} contentStyle={{paddingHorizontal:50}}>Register</PrimaryBtn>
                 <View style={{flexDirection:"row",columnGap:5,alignItems:"flex-end",marginTop:5}}>
                   <Text variant='labelSmall'>Already Registered?</Text>
                   <Text variant='titleSmall' style={{fontSize:16,color:color.PRIMARY,paddingHorizontal:5}} onPress={()=>navigation.navigate("login")}>Login</Text>

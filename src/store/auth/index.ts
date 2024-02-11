@@ -1,8 +1,9 @@
 import {  createSlice  } from '@reduxjs/toolkit'
-import { isAuthenticate, isCompleteWalkthrough } from './service';
+import { isAuthenticate, isCompleteWalkthrough, login, register } from './service';
 import useLocalStorage from 'hooks/useLocalStorage';
 import { authStorage } from 'constants/storage';
 import { IUser } from 'types';
+import { FirebaseAuthTypes } from '@react-native-firebase/auth';
 // import type { PayloadAction } from '@reduxjs/toolkit'
 
 
@@ -10,10 +11,12 @@ interface AuthState{
     isLoading:boolean;
     completeWalkthrough?:boolean|undefined|null;
     user?:IUser|null;
+    error?:string|null
 }
 
 const initialState:AuthState = {
     isLoading:false,
+    error:null
 }
 
 export const authSlice = createSlice({
@@ -34,7 +37,7 @@ export const authSlice = createSlice({
         .addCase(isCompleteWalkthrough.pending,state=>{
             state.completeWalkthrough = undefined;
         })
-        
+
         .addCase(isCompleteWalkthrough.fulfilled,(state,{payload})=>{
             state.completeWalkthrough = payload??null;
         })
@@ -42,11 +45,38 @@ export const authSlice = createSlice({
         .addCase(isCompleteWalkthrough.rejected,state=>{
             state.completeWalkthrough = null;
         })
+        //register
+        .addCase(register.pending,(state)=>{
+            state.isLoading = true;
+            console.log('pending',state.isLoading);
+        })
+        .addCase(register.fulfilled,(state,{payload})=>{
+            state.isLoading = false;
+            console.log(payload);
+        })
+        .addCase(register.rejected,(state,{error})=>{
+            state.isLoading = false;
+            console.log(error.message);
+            state.error = error.message;
+        })
+        //login
+        .addCase(login.pending,(state)=>{
+            state.isLoading = true;
+            console.log('pending',state.isLoading);
+        })
+        .addCase(login.fulfilled,(state,{payload})=>{
+            state.isLoading = false;
+            console.log(payload);
+        })
+        .addCase(login.rejected,(state,{error})=>{
+            state.isLoading = false;
+            console.log(error.message);
+            state.error = error.message;
+        })
         //isAuthentication
         .addCase(isAuthenticate.pending,state=>{
             state.user = undefined;
         })
-        
         .addCase(isAuthenticate.fulfilled,(state,{payload})=>{
             state.user = payload??null;
         })
